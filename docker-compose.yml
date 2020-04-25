@@ -1,0 +1,72 @@
+version: "3.7"
+services:
+  node1:
+    #docker run -it -P -w /home --name node1 --rm --network=blockchain --ip 172.18.0.2
+    #-v $PWD:/home ethereum/client-go --datadir ./node1 --networkid 15 --nousb --nat extip:172.18.0.2
+    image: ethereum/client-go
+    container_name: node1
+    volumes:
+      - ./node1:/home/node
+    ports:
+      - "8545/tcp"
+      - "8546/tcp"
+      - "8547/tcp"
+      - "30303/udp"
+      - "30303/tcp"
+    working_dir: /home/node #"--nodiscover",
+    command: [ "--datadir", "/home/node", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.2", "--netrestrict", "172.18.0.0/24" ]
+    healthcheck:
+      test: ["CMD", "geth", "attach", "geth.ipc", "--exec", "admin.nodeInfo.enode"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      blockchain:
+        ipv4_address: 172.18.0.2
+
+  node2:
+    image: ethereum/client-go
+    container_name: node2
+    volumes:
+      - ./node2:/home/node
+    ports:
+      - "8545/tcp"
+      - "8546/tcp"
+      - "8547/tcp"
+      - "30303/udp"
+      - "30303/tcp"
+    working_dir: /home/node
+    command: [ "--datadir", "/home/node", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.3", "--netrestrict", "172.18.0.0/24"]
+    depends_on:
+      - node1
+    networks:
+      blockchain:
+        ipv4_address: 172.18.0.3
+
+  node3:
+    image: ethereum/client-go
+    container_name: node3
+    volumes:
+      - ./node3:/home/node
+    ports:
+      - "8545/tcp"
+      - "8546/tcp"
+      - "8547/tcp"
+      - "30303/udp"
+      - "30303/tcp"
+    working_dir: /home/node
+    command: [ "--datadir", "/home/node", "--networkid", "15", "--rpc", "--nousb", "--nodiscover", "--nat", "extip:172.18.0.4", "--netrestrict", "172.18.0.0/24"]
+    depends_on:
+      - node1
+    networks:
+      blockchain:
+        ipv4_address: 172.18.0.4
+
+
+networks:
+  blockchain:
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/16
