@@ -1,3 +1,7 @@
-node1/
-node2/
-node3/
+node1/*
+node2/*
+node3/*
+
+!node1/.gitkeep
+!node2/.gitkeep
+!node3/.gitkeep
