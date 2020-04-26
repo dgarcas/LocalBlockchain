@@ -3,10 +3,12 @@ services:
   node1:
     #docker run -it -P -w /home --name node1 --rm --network=blockchain --ip 172.18.0.2
     #-v $PWD:/home ethereum/client-go --datadir ./node1 --networkid 15 --nousb --nat extip:172.18.0.2
-    image: ethereum/client-go
+    image: truffle
     container_name: node1
+    env_file: .env
     volumes:
       - ./node1:/home/node
+      - ./estublock_certificados:/home/estublock_certificados
     ports:
       - "8545/tcp"
       - "8546/tcp"
@@ -14,7 +16,7 @@ services:
       - "30303/udp"
       - "30303/tcp"
     working_dir: /home/node #"--nodiscover",
-    command: [ "--datadir", "/home/node","--rpcaddr", "172.18.0.2", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.2", "--netrestrict", "172.18.0.0/24" ]
+    command: [ "--datadir", "/home/node", "--unlock", "$ADD1", "--password", "pass" ,"--mine","--rpcaddr", "172.18.0.2", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.2", "--netrestrict", "172.18.0.0/24", "--allow-insecure-unlock"]
     healthcheck:
       test: ["CMD", "geth", "attach", "geth.ipc", "--exec", "admin.nodeInfo.enode"]
       interval: 1m30s
