@@ -14,7 +14,7 @@ services:
       - "30303/udp"
       - "30303/tcp"
     working_dir: /home/node #"--nodiscover",
-    command: [ "--datadir", "/home/node", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.2", "--netrestrict", "172.18.0.0/24" ]
+    command: [ "--datadir", "/home/node","--rpcaddr", "172.18.0.2", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.2", "--netrestrict", "172.18.0.0/24" ]
     healthcheck:
       test: ["CMD", "geth", "attach", "geth.ipc", "--exec", "admin.nodeInfo.enode"]
       interval: 1m30s
