@@ -9,7 +9,7 @@ foo@bar:~$ sudo ./restart
 ```
 Con este comando se configura la red blockchain, inicializando los 3 nodos con un address cada uno y se interconectan.
 
-##Deploy
+## Deploy
 Para desplegar la red, tan solo será necesaria la llamada sobre Docker-compose.
 ```console
 foo@bar:~$ docker-compose up
