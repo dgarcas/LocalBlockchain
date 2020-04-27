@@ -2,6 +2,10 @@ node1/*
 node2/*
 node3/*
 
+truffle-project/*
+
 !node1/.gitkeep
 !node2/.gitkeep
 !node3/.gitkeep
+
+!truffle-project/.gitkeep

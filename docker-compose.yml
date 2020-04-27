@@ -8,15 +8,15 @@ services:
     env_file: .env
     volumes:
       - ./node1:/home/node
-      - ./estublock_certificados:/home/estublock_certificados
+      - ./truffle-project:/home/truffle-project
     ports:
       - "8545/tcp"
       - "8546/tcp"
       - "8547/tcp"
       - "30303/udp"
       - "30303/tcp"
-    working_dir: /home/node #"--nodiscover",
-    command: [ "--datadir", "/home/node", "--unlock", "$ADD1", "--password", "pass" ,"--mine","--rpcaddr", "172.18.0.2", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.2", "--netrestrict", "172.18.0.0/24", "--allow-insecure-unlock"]
+    working_dir: /home/truffle-project
+    command: [ "--datadir", "/home/node", "--unlock", "$ADD1", "--password", "/home/node/pass" ,"--mine","--rpcaddr", "172.18.0.2", "--networkid", "15", "--rpc", "--nodiscover", "--nousb", "--nat", "extip:172.18.0.2", "--netrestrict", "172.18.0.0/24", "--allow-insecure-unlock"]
     healthcheck:
       test: ["CMD", "geth", "attach", "geth.ipc", "--exec", "admin.nodeInfo.enode"]
       interval: 1m30s
